@@ -1,0 +1,64 @@
+---
+import { CONTACT, SITE } from '../config';
+import { useTranslations, type Lang } from '../i18n';
+import SmartLink from './SmartLink.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container inner">
+    <p class="stack" lang="en">
+      <span><a href="https://astro.build">{t.footer.builtWith}</a></span>
+      <span class="sep" aria-hidden="true">·</span>
+      <span>{t.footer.hostedOn}</span>
+      <span class="sep" aria-hidden="true">·</span>
+      <span><SmartLink href={CONTACT.sourceRepo}>{t.footer.source}</SmartLink></span>
+    </p>
+    <p class="copy">© {year} {SITE.name}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: auto;
+    border-top: 1px solid var(--border);
+  }
+
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-6);
+    padding-block: var(--space-6);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--muted);
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--space-2);
+  }
+
+  .sep {
+    color: var(--border);
+  }
+
+  .stack a {
+    color: var(--muted);
+    text-decoration-color: var(--border);
+  }
+
+  .stack a:hover {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+  }
+</style>

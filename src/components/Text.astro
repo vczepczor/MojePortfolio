@@ -1,0 +1,13 @@
+---
+/** Vypíše text, nebo placeholder [doplnit], pokud hodnota začíná "TODO:". */
+import { isTodo } from '../i18n';
+import Todo from './Todo.astro';
+
+interface Props {
+  value?: string;
+}
+
+const { value } = Astro.props;
+---
+
+{isTodo(value) || !value ? <Todo note={value} /> : value}

@@ -1,0 +1,173 @@
+---
+import { projectPath, useTranslations, type Lang } from '../../i18n';
+import { getProjects, projectSlug } from '../../lib/projects';
+import SectionTitle from '../SectionTitle.astro';
+import Text from '../Text.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const projects = await getProjects(lang);
+---
+
+<section class="projects" id={t.anchors.projects} aria-labelledby="projects-title">
+  <div class="container">
+    <SectionTitle path="projects" label={t.sections.projects} id="projects-title" />
+
+    <ol class="list" role="list">
+      {
+        projects.map((project, i) => {
+          const { data } = project;
+          const href = projectPath(lang, projectSlug(project));
+          const num = String(i + 1).padStart(2, '0');
+          return (
+            <li class="item">
+              <article aria-labelledby={`p-${num}`}>
+                <p class="num" aria-hidden="true">
+                  {num}
+                </p>
+                <div class="body">
+                  <h3 id={`p-${num}`}>
+                    <a href={href}>{data.title}</a>
+                  </h3>
+                  <p class="meta">
+                    <span>{data.period}</span>
+                    <span class="sep" aria-hidden="true">·</span>
+                    <span>{t.projectTypes[data.type]}</span>
+                  </p>
+                  <ul class="tech" role="list" aria-label={t.projects.tech}>
+                    {data.tech.map((tech) => (
+                      <li>{tech}</li>
+                    ))}
+                  </ul>
+                  <p class="summary">{data.summary}</p>
+                  <p class="finding">
+                    <span class="label">{t.projects.finding}:</span> <Text value={data.keyFinding} />
+                  </p>
+                  <a class="more" href={href}>
+                    {t.projects.detail}
+                    <span class="visually-hidden">: {data.title}</span>
+                    <span aria-hidden="true"> →</span>
+                  </a>
+                </div>
+              </article>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .projects {
+    padding-block: var(--space-8) var(--space-6);
+  }
+
+  .list {
+    margin: 0;
+  }
+
+  .item {
+    border-top: 1px solid var(--border);
+    padding-block: var(--space-7);
+  }
+
+  .item:first-child {
+    padding-top: var(--space-6);
+  }
+
+  article {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: var(--space-2);
+  }
+
+  @media (min-width: 720px) {
+    article {
+      grid-template-columns: 4.5rem minmax(0, var(--w-text));
+      column-gap: 0;
+    }
+  }
+
+  .num {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    color: var(--accent);
+    padding-top: 0.45em;
+  }
+
+  .body {
+    max-width: var(--w-text);
+  }
+
+  h3 {
+    font-size: var(--fs-xl);
+    letter-spacing: -0.01em;
+  }
+
+  h3 a {
+    text-decoration: none;
+  }
+
+  h3 a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+  }
+
+  .meta,
+  .tech {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--muted);
+  }
+
+  .meta {
+    margin-top: var(--space-3);
+  }
+
+  .meta .sep {
+    padding-inline: var(--space-2);
+  }
+
+  .tech {
+    display: flex;
+    flex-wrap: wrap;
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    line-height: 1.8;
+  }
+
+  .tech li:not(:last-child)::after {
+    content: '/';
+    color: var(--border);
+    padding-inline: var(--space-2);
+  }
+
+  .summary {
+    margin-top: var(--space-4);
+  }
+
+  .finding {
+    margin-top: var(--space-4);
+    padding-left: var(--space-4);
+    border-left: 1px solid var(--accent);
+    color: var(--text);
+  }
+
+  .finding .label {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--accent);
+  }
+
+  .more {
+    display: inline-block;
+    margin-top: var(--space-5);
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+  }
+</style>

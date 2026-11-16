@@ -1,0 +1,126 @@
+{
+  "meta": {
+    "title": "Václav Czepczor – IT student, Linux, sítě, security",
+    "description": "Portfolio Václava Czepczora: projekty z oblasti Linuxu, počítačových sítí a kybernetické bezpečnosti.",
+    "ogImageAlt": "Václav Czepczor – IT student · Linux · networking · security"
+  },
+  "a11y": {
+    "skip": "Přeskočit na obsah",
+    "mainNav": "Hlavní navigace",
+    "langSwitch": "Přepnout jazyk"
+  },
+  "nav": {
+    "projects": "projekty",
+    "about": "o mně",
+    "contact": "kontakt"
+  },
+  "anchors": {
+    "projects": "projekty",
+    "about": "o-mne",
+    "contact": "kontakt"
+  },
+  "footer": {
+    "builtWith": "built with astro",
+    "hostedOn": "hosted on github pages",
+    "source": "source on github"
+  },
+  "placeholder": "[doplnit]",
+  "sections": {
+    "projects": "Projekty",
+    "other": "Další projekty",
+    "about": "O mně",
+    "contact": "Kontakt"
+  },
+  "hero": {
+    "role": "IT student · Linux, sítě, security",
+    "intro": "Stavím a rozbíjím sítě v labu, abych věděl, jak je ubránit. Ve škole k tomu programuju weby a aplikace.",
+    "linksLabel": "Odkazy",
+    "email": "E-mail",
+    "cv": "CV (PDF)"
+  },
+  "projectTypes": {
+    "school": "školní projekt",
+    "personal": "osobní projekt",
+    "client": "pro klienta"
+  },
+  "projects": {
+    "finding": "zjištění",
+    "detail": "Detail projektu",
+    "tech": "Technologie"
+  },
+  "other": {
+    "items": [
+      {
+        "name": "Homelab",
+        "description": "TODO: krátký popis (např. domácí server na Raspberry Pi: Pi-hole, Docker, monitoring)",
+        "tech": "TODO: technologie (např. Raspberry Pi · Docker · Pi-hole)",
+        "href": "TODO: odkaz (GitHub repozitář nebo writeup)"
+      },
+      {
+        "name": "CTF / TryHackMe",
+        "description": "TODO: krátký popis (např. profil a writeupy vyřešených roomek)",
+        "tech": "TODO: oblasti (např. web · privesc · forensics)",
+        "href": "TODO: odkaz na profil nebo writeupy"
+      },
+      {
+        "name": "Weby",
+        "description": "TODO: krátký popis (např. webové vizitky pro klienty)",
+        "tech": "TODO: technologie (např. HTML · CSS · Astro)",
+        "href": "TODO: odkaz na ukázku"
+      }
+    ],
+    "open": "otevřít"
+  },
+  "about": {
+    "paragraphs": [
+      "Studuju IT a nejvíc mě zajímá to, co běží pod aplikacemi: Linux, sítě a jejich zabezpečení. Věci si stavím ve vlastním labu ve virtuálkách, protože tam je můžu rozbít a zjistit, proč se rozbily.",
+      "Ve škole k tomu dělám weby a aplikace, takže umím dotáhnout i rozhraní, které nad infrastrukturou běží."
+    ],
+    "nowTitle": "Co mám rozjeté",
+    "now": [
+      {
+        "lead": "Provozuju",
+        "text": "TODO: co provozuješ (např. homelab na Raspberry Pi s Pi-hole a Dockerem)"
+      },
+      {
+        "lead": "Učím se",
+        "text": "TODO: co se učíš (např. na certifikaci CompTIA Security+ nebo CCNA)"
+      },
+      {
+        "lead": "Řeším",
+        "text": "TODO: aktuální projekt nebo problém (např. IDS Suricata do SOC Labu)"
+      },
+      {
+        "lead": "Zajímá mě",
+        "text": "TODO: oblast, která tě táhne (např. detekce útoků, incident response)"
+      }
+    ]
+  },
+  "contact": {
+    "text": "Máte projekt, stáž nebo otázku k některému z projektů? Napište mi.",
+    "emailLabel": "E-mail"
+  },
+  "detail": {
+    "back": "Zpět na projekty",
+    "period": "období",
+    "type": "typ",
+    "duration": "délka",
+    "role": "role",
+    "tech": "technologie",
+    "meta": "Údaje o projektu",
+    "links": "Odkazy",
+    "github": "Repozitář na GitHubu",
+    "pdf": "Dokumentace (PDF)",
+    "pager": "Další projekty",
+    "prev": "předchozí",
+    "next": "další",
+    "visualTodo": "TODO: hlavní vizuál projektu (diagram, nebo cover s obrázkem ve frontmatteru)"
+  },
+  "notFound": {
+    "title": "Stránka nenalezena",
+    "error": "no such file or directory",
+    "text": "Tahle stránka neexistuje, nebo se přesunula.",
+    "home": "Zpět na hlavní stránku",
+    "homeEn": "English version"
+  }
+}

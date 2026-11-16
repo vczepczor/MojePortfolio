@@ -1,0 +1,23 @@
+---
+/**
+ * Obal diagramu: kontejner s horizontálním scrollem (mobil), nápověda a popisek.
+ * Kontejner je fokusovatelný, aby šel posouvat i klávesnicí.
+ */
+import '../../styles/diagram.css';
+
+interface Props {
+  caption: string;
+  hint: string;
+  label: string;
+}
+
+const { caption, hint, label } = Astro.props;
+---
+
+<figure class="dg-figure">
+  <div class="dg-scroll" tabindex="0" role="group" aria-label={label}>
+    <slot />
+  </div>
+  <p class="dg-hint" aria-hidden="true">{hint}</p>
+  <figcaption class="dg-caption">{caption}</figcaption>
+</figure>

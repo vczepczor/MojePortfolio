@@ -1,0 +1,34 @@
+---
+/**
+ * Odkaz, který počítá s placeholdery.
+ * Je-li href "TODO: …", vykreslí jen text a značku [doplnit] – layout se nerozbije.
+ */
+import { isTodo } from '../i18n';
+import Todo from './Todo.astro';
+
+interface Props {
+  href: string;
+  class?: string;
+  [key: string]: unknown;
+}
+
+const { href, class: className, ...rest } = Astro.props;
+const external = /^https?:\/\//.test(href);
+---
+
+{
+  isTodo(href) ? (
+    <span class:list={[className, 'is-todo']}>
+      <slot /> <Todo note={href} />
+    </span>
+  ) : (
+    <a
+      href={href}
+      class={className}
+      {...(external ? { rel: 'noopener noreferrer' } : {})}
+      {...rest}
+    >
+      <slot />
+    </a>
+  )
+}

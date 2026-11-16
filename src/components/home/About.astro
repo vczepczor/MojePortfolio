@@ -1,0 +1,76 @@
+---
+import { useTranslations, type Lang } from '../../i18n';
+import SectionTitle from '../SectionTitle.astro';
+import Text from '../Text.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="about" id={t.anchors.about} aria-labelledby="about-title">
+  <div class="container">
+    <SectionTitle path="about" label={t.sections.about} id="about-title" />
+
+    <div class="measure">
+      {t.about.paragraphs.map((p) => <p class="para"><Text value={p} /></p>)}
+
+      <h3 class="now-title">{t.about.nowTitle}</h3>
+      <ul class="now" role="list">
+        {
+          t.about.now.map((item) => (
+            <li>
+              <span class="lead">{item.lead}</span> <Text value={item.text} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    padding-block: var(--space-8);
+    border-top: 1px solid var(--border);
+  }
+
+  .para + .para {
+    margin-top: var(--space-4);
+  }
+
+  .now-title {
+    margin-top: var(--space-7);
+    font-size: var(--fs-base);
+    font-weight: 600;
+  }
+
+  .now {
+    margin: var(--space-4) 0 0;
+  }
+
+  .now li {
+    position: relative;
+    padding-left: var(--space-5);
+    color: var(--muted);
+  }
+
+  .now li + li {
+    margin-top: var(--space-2);
+  }
+
+  .now li::before {
+    content: '-';
+    position: absolute;
+    left: 0;
+    font-family: var(--font-mono);
+    color: var(--accent);
+  }
+
+  .lead {
+    color: var(--text);
+  }
+</style>

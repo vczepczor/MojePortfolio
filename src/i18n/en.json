@@ -1,0 +1,126 @@
+{
+  "meta": {
+    "title": "Václav Czepczor – IT student, Linux, networking, security",
+    "description": "Portfolio of Václav Czepczor: projects in Linux, computer networking and cybersecurity.",
+    "ogImageAlt": "Václav Czepczor – IT student · Linux · networking · security"
+  },
+  "a11y": {
+    "skip": "Skip to content",
+    "mainNav": "Main navigation",
+    "langSwitch": "Switch language"
+  },
+  "nav": {
+    "projects": "projects",
+    "about": "about",
+    "contact": "contact"
+  },
+  "anchors": {
+    "projects": "projects",
+    "about": "about",
+    "contact": "contact"
+  },
+  "footer": {
+    "builtWith": "built with astro",
+    "hostedOn": "hosted on github pages",
+    "source": "source on github"
+  },
+  "placeholder": "[to be added]",
+  "sections": {
+    "projects": "Projects",
+    "other": "Other projects",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "hero": {
+    "role": "IT student · Linux, networking, security",
+    "intro": "I build and break networks in a lab to learn how to defend them. At school I also build websites and applications.",
+    "linksLabel": "Links",
+    "email": "E-mail",
+    "cv": "CV (PDF)"
+  },
+  "projectTypes": {
+    "school": "school project",
+    "personal": "personal project",
+    "client": "client work"
+  },
+  "projects": {
+    "finding": "finding",
+    "detail": "Project details",
+    "tech": "Technologies"
+  },
+  "other": {
+    "items": [
+      {
+        "name": "Homelab",
+        "description": "TODO: short description (e.g. home server on a Raspberry Pi: Pi-hole, Docker, monitoring)",
+        "tech": "TODO: technologies (e.g. Raspberry Pi · Docker · Pi-hole)",
+        "href": "TODO: link (GitHub repository or write-up)"
+      },
+      {
+        "name": "CTF / TryHackMe",
+        "description": "TODO: short description (e.g. profile and write-ups of solved rooms)",
+        "tech": "TODO: areas (e.g. web · privesc · forensics)",
+        "href": "TODO: link to profile or write-ups"
+      },
+      {
+        "name": "Websites",
+        "description": "TODO: short description (e.g. business-card websites for clients)",
+        "tech": "TODO: technologies (e.g. HTML · CSS · Astro)",
+        "href": "TODO: link to an example"
+      }
+    ],
+    "open": "open"
+  },
+  "about": {
+    "paragraphs": [
+      "I study IT and I am most interested in what runs underneath applications: Linux, networks and how to secure them. I build things in my own virtual lab, because there I can break them and find out why they broke.",
+      "At school I also build websites and applications, so I can finish the interface that runs on top of the infrastructure too."
+    ],
+    "nowTitle": "What I am working on",
+    "now": [
+      {
+        "lead": "Running",
+        "text": "TODO: what you run (e.g. a Raspberry Pi homelab with Pi-hole and Docker)"
+      },
+      {
+        "lead": "Learning",
+        "text": "TODO: what you are learning (e.g. towards CompTIA Security+ or CCNA)"
+      },
+      {
+        "lead": "Working on",
+        "text": "TODO: current project or problem (e.g. adding Suricata IDS to the SOC Lab)"
+      },
+      {
+        "lead": "Interested in",
+        "text": "TODO: an area that pulls you in (e.g. attack detection, incident response)"
+      }
+    ]
+  },
+  "contact": {
+    "text": "Got a project, an internship or a question about one of my projects? Write to me.",
+    "emailLabel": "E-mail"
+  },
+  "detail": {
+    "back": "Back to projects",
+    "period": "period",
+    "type": "type",
+    "duration": "duration",
+    "role": "role",
+    "tech": "technologies",
+    "meta": "Project details",
+    "links": "Links",
+    "github": "GitHub repository",
+    "pdf": "Documentation (PDF)",
+    "pager": "More projects",
+    "prev": "previous",
+    "next": "next",
+    "visualTodo": "TODO: main project visual (a diagram, or a cover image in the frontmatter)"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "error": "no such file or directory",
+    "text": "This page does not exist or has moved.",
+    "home": "Back to the home page",
+    "homeEn": "Česká verze"
+  }
+}

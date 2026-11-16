@@ -1,0 +1,19 @@
+---
+/**
+ * Nadpis sekce ve stylu cesty v terminálu: ~/projects
+ * Čtečky obrazovky přečtou lokalizovaný název (label), vizuálně se zobrazí cesta.
+ */
+interface Props {
+  path: string;
+  label: string;
+  as?: 'h2' | 'h3';
+  id?: string;
+}
+
+const { path, label, as: Tag = 'h2', id } = Astro.props;
+---
+
+<Tag class="section-title" id={id}>
+  <span aria-hidden="true"><span class="tilde">~</span>/{path}</span>
+  <span class="visually-hidden">{label}</span>
+</Tag>

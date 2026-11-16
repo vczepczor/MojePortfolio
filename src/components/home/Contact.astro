@@ -1,0 +1,57 @@
+---
+import { useTranslations, type Lang } from '../../i18n';
+import { links } from '../../lib/links';
+import SectionTitle from '../SectionTitle.astro';
+import SmartLink from '../SmartLink.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="contact" id={t.anchors.contact} aria-labelledby="contact-title">
+  <div class="container">
+    <SectionTitle path="contact" label={t.sections.contact} id="contact-title" />
+
+    <p class="text measure">{t.contact.text}</p>
+
+    <p class="email">
+      <SmartLink href={links.email}>{links.emailAddress ?? t.contact.emailLabel}</SmartLink>
+    </p>
+
+    <ul class="secondary" role="list">
+      <li><SmartLink href={links.github}>GitHub</SmartLink></li>
+      <li><SmartLink href={links.linkedin}>LinkedIn</SmartLink></li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .contact {
+    padding-block: var(--space-8) var(--space-9);
+    border-top: 1px solid var(--border);
+  }
+
+  .email {
+    margin-top: var(--space-5);
+    font-size: var(--fs-xl);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    overflow-wrap: anywhere;
+  }
+
+  .secondary {
+    display: flex;
+    flex-wrap: wrap;
+    margin: var(--space-5) 0 0;
+  }
+
+  .secondary li:not(:last-child)::after {
+    content: '·';
+    color: var(--muted);
+    padding-inline: var(--space-3);
+  }
+</style>

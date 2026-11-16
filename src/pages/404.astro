@@ -1,0 +1,90 @@
+---
+/**
+ * Vlastní 404. GitHub Pages ji vrací pro všechny neexistující cesty pod /portfolio/.
+ * Jazyk návštěvníka neznáme, proto je česky s odkazem i na anglickou verzi.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { homePath, useTranslations } from '../i18n';
+
+const t = useTranslations('cs');
+const en = useTranslations('en');
+---
+
+<BaseLayout lang="cs" title={t.notFound.title} noindex>
+  <section class="not-found">
+    <div class="container">
+      <pre class="term"><span class="dollar">$</span> cd <span data-path>/stranka</span>
+<span class="err">cd: <span data-path>/stranka</span>: {t.notFound.error}</span></pre>
+
+      <h1>404</h1>
+      <p class="text">{t.notFound.text}</p>
+      <p class="text muted" lang="en">{en.notFound.text}</p>
+
+      <ul class="links" role="list">
+        <li><a href={homePath('cs')}>{t.notFound.home}</a></li>
+        <li><a href={homePath('en')} lang="en" hreflang="en">{en.notFound.home}</a></li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<!-- Jediný JS na webu: dosadí do výpisu skutečnou cestu. Bez JS zůstane "/stranka". -->
+<script is:inline>
+  (function () {
+    var base = '/portfolio';
+    var path = decodeURIComponent(location.pathname);
+    if (path.indexOf(base) === 0) path = path.slice(base.length) || '/';
+    if (path.length > 60) path = path.slice(0, 57) + '...';
+    document.querySelectorAll('[data-path]').forEach(function (el) {
+      el.textContent = path;
+    });
+  })();
+</script>
+
+<style>
+  .not-found {
+    padding-block: var(--space-8) var(--space-9);
+  }
+
+  @media (min-width: 720px) {
+    .not-found {
+      padding-top: var(--space-9);
+    }
+  }
+
+  .term {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    line-height: 1.7;
+    color: var(--text);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    margin: 0;
+  }
+
+  .dollar {
+    color: var(--accent);
+  }
+
+  .err {
+    color: var(--muted);
+  }
+
+  h1 {
+    margin-top: var(--space-7);
+    font-size: var(--fs-2xl);
+    letter-spacing: -0.02em;
+  }
+
+  .text {
+    margin-top: var(--space-3);
+    max-width: var(--w-text);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    margin: var(--space-6) 0 0;
+  }
+</style>

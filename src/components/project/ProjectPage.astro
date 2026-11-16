@@ -1,0 +1,352 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { homePath, isTodo, projectPath, useTranslations, withBase, type Lang } from '../../i18n';
+import { projectSlug, type Project } from '../../lib/projects';
+import SmartLink from '../SmartLink.astro';
+import Text from '../Text.astro';
+import ProjectVisual from './ProjectVisual.astro';
+
+interface Props {
+  lang: Lang;
+  entry: Project;
+  prev: Project | null;
+  next: Project | null;
+}
+
+const { lang, entry, prev, next } = Astro.props;
+const t = useTranslations(lang);
+const { data } = entry;
+const slug = projectSlug(entry);
+const { Content } = await render(entry);
+
+const alternates = { cs: projectPath('cs', slug), en: projectPath('en', slug) };
+const backHref = `${homePath(lang)}#${t.anchors.projects}`;
+
+const meta = [
+  { label: t.detail.period, value: data.period },
+  { label: t.detail.type, value: t.projectTypes[data.type] },
+  { label: t.detail.duration, value: data.duration },
+  { label: t.detail.role, value: data.role },
+].filter((m) => m.value);
+
+/** Cesty do public/ ("/docs/x.pdf") doplní o base, externí URL a TODO nechá být. */
+const localHref = (href: string) => (!isTodo(href) && href.startsWith('/') ? withBase(href) : href);
+
+const links = [
+  data.github ? { label: t.detail.github, href: data.github } : null,
+  data.pdf ? { label: t.detail.pdf, href: localHref(data.pdf) } : null,
+].filter((l): l is { label: string; href: string } => l !== null);
+---
+
+<BaseLayout lang={lang} title={data.title} description={data.summary} alternates={alternates} ogType="article">
+  <article class="project">
+    <div class="container">
+      <p class="back">
+        <a href={backHref}><span aria-hidden="true">← </span>{t.detail.back}</a>
+      </p>
+
+      <header class="head measure">
+        <h1>{data.title}</h1>
+        <p class="subtitle">{data.subtitle}</p>
+
+        <dl class="meta">
+          {
+            meta.map((m) => (
+              <div>
+                <dt>{m.label}</dt>
+                <dd>
+                  <Text value={m.value} />
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+
+        <ul class="tech" role="list" aria-label={t.detail.tech}>
+          {data.tech.map((tech) => <li>{tech}</li>)}
+        </ul>
+      </header>
+
+      <ProjectVisual lang={lang} data={data} />
+
+      <div class="prose measure">
+        <Content />
+      </div>
+
+      {
+        links.length > 0 && (
+          <section class="links measure" aria-labelledby="links-title">
+            <h2 id="links-title">{t.detail.links}</h2>
+            <ul role="list">
+              {links.map((link) => (
+                <li>
+                  <SmartLink href={link.href}>{link.label}</SmartLink>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+
+      {
+        (prev || next) && (
+          <nav class="pager" aria-label={t.detail.pager}>
+            {prev && (
+              <a class="prev" href={projectPath(lang, projectSlug(prev))} rel="prev">
+                <span class="dir">
+                  <span aria-hidden="true">← </span>
+                  {t.detail.prev}
+                </span>
+                <span class="name">{prev.data.title}</span>
+              </a>
+            )}
+            {next && (
+              <a class="next" href={projectPath(lang, projectSlug(next))} rel="next">
+                <span class="dir">
+                  {t.detail.next}
+                  <span aria-hidden="true"> →</span>
+                </span>
+                <span class="name">{next.data.title}</span>
+              </a>
+            )}
+          </nav>
+        )
+      }
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .project {
+    padding-block: var(--space-6) var(--space-8);
+  }
+
+  @media (min-width: 720px) {
+    .project {
+      padding-top: var(--space-7);
+    }
+  }
+
+  .back {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+  }
+
+  .back a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .back a:hover {
+    color: var(--accent);
+  }
+
+  .head {
+    margin-top: var(--space-7);
+  }
+
+  h1 {
+    font-size: var(--fs-2xl);
+    letter-spacing: -0.02em;
+  }
+
+  .subtitle {
+    margin-top: var(--space-4);
+    font-size: var(--fs-lg);
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: var(--space-4) var(--space-5);
+    margin-top: var(--space-6);
+    padding-block: var(--space-4);
+    border-block: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+  }
+
+  .meta dt {
+    color: var(--muted);
+  }
+
+  .meta dd {
+    margin: var(--space-1) 0 0;
+    color: var(--text);
+  }
+
+  .tech {
+    display: flex;
+    flex-wrap: wrap;
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .tech li:not(:last-child)::after {
+    content: '/';
+    color: var(--border);
+    padding-inline: var(--space-2);
+  }
+
+  .links {
+    margin-top: var(--space-8);
+  }
+
+  .links h2 {
+    font-size: var(--fs-xl);
+    letter-spacing: -0.01em;
+  }
+
+  .links ul {
+    margin: var(--space-4) 0 0;
+    padding: 0;
+  }
+
+  .links li + li {
+    margin-top: var(--space-2);
+  }
+
+  .pager {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border);
+  }
+
+  @media (min-width: 640px) {
+    .pager {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .pager .next {
+      grid-column: 2;
+      text-align: right;
+      align-items: flex-end;
+    }
+  }
+
+  .pager a {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    text-decoration: none;
+  }
+
+  .dir {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--muted);
+  }
+
+  .name {
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+  }
+
+  .pager a:hover .name {
+    color: var(--accent);
+  }
+
+  /* ------------------------------------------------------------------
+     Obsah z Markdownu
+     ------------------------------------------------------------------ */
+
+  .prose :global(h2) {
+    font-size: var(--fs-xl);
+    letter-spacing: -0.01em;
+    margin-top: var(--space-8);
+  }
+
+  .prose :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .prose :global(h3) {
+    font-size: var(--fs-base);
+    font-weight: 600;
+    margin-top: var(--space-6);
+  }
+
+  .prose :global(:is(p, ul, ol, .table-wrap)) {
+    margin-top: var(--space-4);
+  }
+
+  .prose :global(:is(h2, h3) + :is(p, ul, ol)) {
+    margin-top: var(--space-3);
+  }
+
+  .prose :global(:is(ul, ol)) {
+    padding-left: 1.25rem;
+  }
+
+  .prose :global(li + li) {
+    margin-top: var(--space-2);
+  }
+
+  .prose :global(li::marker) {
+    color: var(--muted);
+  }
+
+  .prose :global(strong) {
+    font-weight: 600;
+  }
+
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    padding: 0.1em 0.35em;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+  }
+
+  .prose :global(.table-wrap) {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-sm);
+  }
+
+  .prose :global(:is(th, td)) {
+    text-align: left;
+    vertical-align: top;
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .prose :global(th) {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    font-weight: 400;
+    color: var(--muted);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  .prose :global(tr + tr td) {
+    border-top: 1px solid var(--border);
+  }
+
+  @media (min-width: 640px) {
+    .prose :global(td:first-child) {
+      white-space: nowrap;
+    }
+  }
+</style>

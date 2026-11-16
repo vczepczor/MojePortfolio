@@ -1,0 +1,127 @@
+---
+/**
+ * Hlavní vizuál projektu: diagram (podle `diagram` ve frontmatteru) nebo `cover`,
+ * pod ním volitelně fotky. Fotka bez `src` se zobrazí jako placeholder s popiskem.
+ * Nový diagram = komponenta v src/components/diagrams/ + položka v mapě níže
+ * + hodnota v enumu `diagram` v src/content.config.ts.
+ */
+import { Image } from 'astro:assets';
+import type { Lang } from '../../i18n';
+import { useTranslations } from '../../i18n';
+import type { Project } from '../../lib/projects';
+import NetworkDiagram from '../diagrams/NetworkDiagram.astro';
+import SmartLockFlow from '../diagrams/SmartLockFlow.astro';
+import Todo from '../Todo.astro';
+
+interface Props {
+  lang: Lang;
+  data: Project['data'];
+}
+
+const { lang, data } = Astro.props;
+const t = useTranslations(lang);
+
+const diagrams = {
+  'soc-network': NetworkDiagram,
+  'smart-lock-flow': SmartLockFlow,
+} as const;
+
+const Diagram = data.diagram ? diagrams[data.diagram] : null;
+const { cover, photos } = data;
+---
+
+<div class="visual">
+  {
+    Diagram ? (
+      <Diagram lang={lang} />
+    ) : cover ? (
+      <figure>
+        <Image src={cover.src} alt={cover.alt} widths={[640, 960, 1440]} sizes="(min-width: 1024px) 960px, 100vw" loading="eager" />
+        {cover.caption && <figcaption class="caption">{cover.caption}</figcaption>}
+      </figure>
+    ) : (
+      <div class="placeholder placeholder--main">
+        <Todo note={t.detail.visualTodo} />
+      </div>
+    )
+  }
+
+  {
+    photos.length > 0 && (
+      <div class="photos">
+        {photos.map((photo) => (
+          <figure>
+            {photo.src ? (
+              <Image
+                src={photo.src}
+                alt={photo.alt ?? ''}
+                widths={[480, 720, 960]}
+                sizes="(min-width: 760px) 460px, 100vw"
+                class="photo"
+              />
+            ) : (
+              <div class="placeholder placeholder--photo">
+                <Todo note={photo.todo} />
+              </div>
+            )}
+            <figcaption class="caption">{photo.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .visual {
+    margin-block: var(--space-7);
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  .placeholder {
+    display: grid;
+    place-items: center;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+  }
+
+  .placeholder--main {
+    min-height: 14rem;
+  }
+
+  .placeholder--photo {
+    aspect-ratio: 4 / 3;
+  }
+
+  .photos {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    margin-top: var(--space-6);
+  }
+
+  @media (min-width: 640px) {
+    .photos {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+
+  .caption {
+    margin-top: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--muted);
+  }
+</style>

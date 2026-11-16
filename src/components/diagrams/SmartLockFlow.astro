@@ -1,0 +1,122 @@
+---
+/**
+ * Tok dat Smart Locku: kamera → FastAPI → face_recognition → rozhodnutí
+ * → GPIO zámek (při shodě) + MariaDB log (vždy) → admin dashboard.
+ * Kresleno ručně v souřadnicích viewBoxu 960 × 320.
+ */
+import type { Lang } from '../../i18n';
+import DiagramFigure from './DiagramFigure.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const text = {
+  cs: {
+    label: 'Diagram toku dat Smart Locku',
+    title: 'Tok dat v systému Smart Lock',
+    desc:
+      'Pi Camera 3 pořídí snímek obličeje a předá ho FastAPI backendu na Raspberry Pi 4. ' +
+      'Backend ho pošle knihovně face_recognition (OpenCV a dlib), která ho porovná s uloženými šablonami. ' +
+      'Následuje rozhodnutí: při shodě backend přes GPIO odemkne elektromagnetický zámek. ' +
+      'Každý pokus, úspěšný i neúspěšný, se zapíše do MariaDB i s fotkou. Z databáze čte admin dashboard v Reactu.',
+    caption: 'Obr. 1: tok dat od kamery po záznam v admin dashboardu',
+    hint: '← posuň do strany →',
+    pi: 'Raspberry Pi 4 · Python',
+    camera: ['Pi Camera 3', 'snímek obličeje'],
+    api: ['FastAPI', 'REST API'],
+    face: ['face_recognition', 'OpenCV + dlib'],
+    decision: ['rozhodnutí', 'shoda?'],
+    gpio: ['GPIO zámek', 'odemknout'],
+    db: ['MariaDB', 'log + fotka'],
+    admin: ['Admin dashboard', 'React'],
+    match: 'shoda',
+    always: 'vždy',
+  },
+  en: {
+    label: 'Smart Lock data flow diagram',
+    title: 'Data flow in the Smart Lock system',
+    desc:
+      'The Pi Camera 3 captures a face and passes it to the FastAPI backend on the Raspberry Pi 4. ' +
+      'The backend sends it to the face_recognition library (OpenCV and dlib), which compares it with the stored templates. ' +
+      'Then comes the decision: on a match the backend unlocks the electromagnetic lock over GPIO. ' +
+      'Every attempt, successful or not, is written to MariaDB with a photo. The React admin dashboard reads from the database.',
+    caption: 'Fig. 1: data flow from the camera to the record in the admin dashboard',
+    hint: '← scroll sideways →',
+    pi: 'Raspberry Pi 4 · Python',
+    camera: ['Pi Camera 3', 'face snapshot'],
+    api: ['FastAPI', 'REST API'],
+    face: ['face_recognition', 'OpenCV + dlib'],
+    decision: ['decision', 'match?'],
+    gpio: ['GPIO lock', 'unlock'],
+    db: ['MariaDB', 'log + photo'],
+    admin: ['Admin dashboard', 'React'],
+    match: 'match',
+    always: 'always',
+  },
+}[lang];
+
+const nodes = [
+  { x: 0, y: 130, w: 150, label: text.camera },
+  { x: 195, y: 130, w: 140, label: text.api },
+  { x: 370, y: 130, w: 180, label: text.face },
+  { x: 590, y: 130, w: 130, label: text.decision },
+  { x: 790, y: 30, w: 169, label: text.gpio, accent: true },
+  { x: 790, y: 130, w: 169, label: text.db },
+  { x: 790, y: 230, w: 169, label: text.admin },
+];
+---
+
+<DiagramFigure caption={text.caption} hint={text.hint} label={text.label}>
+  <svg
+    class="dg"
+    viewBox="0 0 960 320"
+    role="img"
+    aria-labelledby="flow-title flow-desc"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <title id="flow-title">{text.title}</title>
+    <desc id="flow-desc">{text.desc}</desc>
+
+    <defs>
+      <marker id="flow-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+        <path class="dg-arrow" d="M0 1 L10 5 L0 9 z" />
+      </marker>
+      <marker id="flow-arrow-accent" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+        <path class="dg-arrow-accent" d="M0 1 L10 5 L0 9 z" />
+      </marker>
+    </defs>
+
+    <!-- Raspberry Pi: rámeček kolem softwaru -->
+    <rect class="dg-zone" x="175.5" y="88.5" width="554" height="134" rx="4" />
+    <text class="dg-zone-sub" x="191" y="112">{text.pi}</text>
+
+    <!-- šipky -->
+    <path class="dg-link" d="M150 160.5 H194" marker-end="url(#flow-arrow)" />
+    <path class="dg-link" d="M335 160.5 H369" marker-end="url(#flow-arrow)" />
+    <path class="dg-link" d="M550 160.5 H589" marker-end="url(#flow-arrow)" />
+    <path class="dg-link" d="M720 160.5 H789" marker-end="url(#flow-arrow)" />
+    <path class="dg-link" d="M874.5 190 V229" marker-end="url(#flow-arrow)" />
+    <path class="dg-accent-line" d="M720 160.5 H755.5 V60.5 H789" marker-end="url(#flow-arrow-accent)" />
+
+    <text class="dg-accent-text" x="764" y="112">{text.match}</text>
+    <text class="dg-muted-text" x="755" y="184" text-anchor="middle">{text.always}</text>
+
+    <!-- uzly -->
+    {
+      nodes.map((n) => (
+        <g>
+          <rect class="dg-node" x={n.x + 0.5} y={n.y + 0.5} width={n.w} height="60" rx="3" style={n.accent ? 'stroke: var(--accent)' : undefined} />
+          <text class="dg-node-name" x={n.x + 14} y={n.y + 27}>
+            {n.label[0]}
+          </text>
+          <text class="dg-node-sub" x={n.x + 14} y={n.y + 47}>
+            {n.label[1]}
+          </text>
+        </g>
+      ))
+    }
+  </svg>
+</DiagramFigure>

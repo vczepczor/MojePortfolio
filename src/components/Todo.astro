@@ -1,0 +1,16 @@
+---
+/**
+ * Nenápadný placeholder pro chybějící obsah.
+ * Zdrojová hodnota "TODO: …" se vypíše do title, aby šlo při najetí myší zjistit, co chybí.
+ */
+import { getLangFromUrl, useTranslations } from '../i18n';
+
+interface Props {
+  note?: string;
+}
+
+const { note } = Astro.props;
+const t = useTranslations(getLangFromUrl(Astro.url));
+---
+
+<span class="todo" title={note}>{t.placeholder}</span>

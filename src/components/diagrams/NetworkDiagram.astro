@@ -1,0 +1,152 @@
+---
+/**
+ * Topologie SOC Labu: 3 zóny, 4 virtuální stroje, WireGuard tunel a firewall na VPN bráně.
+ * Kresleno ručně v souřadnicích viewBoxu 960 × 400.
+ */
+import type { Lang } from '../../i18n';
+import DiagramFigure from './DiagramFigure.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const text = {
+  cs: {
+    label: 'Schéma topologie SOC Labu',
+    title: 'Topologie sítě SOC Labu',
+    desc:
+      'Síť má tři zóny. Externí síť VMnet1 192.168.1.0/24 obsahuje Kali Linux (útočník) a vzdáleného klienta. ' +
+      'Uprostřed je DMZ s VPN bránou, která je dual-homed a vynucuje firewallová pravidla mezi zónami. ' +
+      'Vzdálený klient se k bráně připojuje WireGuard tunelem. ' +
+      'Interní síť VMnet2 10.0.0.0/24 obsahuje SIEM server s Wazuhem a DB server s PostgreSQL a Flask API.',
+    caption: 'Obr. 1: topologie labu, 3 zóny a 4 virtuální stroje ve VMware Workstation',
+    hint: '← posuň do strany →',
+    external: 'externí síť',
+    externalSub: 'VMnet1 · 192.168.1.0/24',
+    dmz: 'DMZ',
+    dmzSub: 'VPN brána',
+    internal: 'interní síť',
+    internalSub: 'VMnet2 · 10.0.0.0/24',
+    kali: ['Kali Linux', 'útočník · 3 GB'],
+    remote: ['vzdálený klient', 'WireGuard peer'],
+    gw: ['VPN gateway', 'dual-homed · 2 GB'],
+    siem: ['SIEM server', 'Wazuh · 6 GB'],
+    db: ['DB server', 'Postgres + Flask · 4 GB'],
+    fw: 'firewall',
+    tunnel: 'WireGuard tunel',
+    legendLink: 'síťové spojení',
+  },
+  en: {
+    label: 'SOC Lab topology diagram',
+    title: 'SOC Lab network topology',
+    desc:
+      'The network has three zones. The external network VMnet1 192.168.1.0/24 contains Kali Linux (attacker) and a remote client. ' +
+      'In the middle is a DMZ with a VPN gateway that is dual-homed and enforces firewall rules between the zones. ' +
+      'The remote client connects to the gateway through a WireGuard tunnel. ' +
+      'The internal network VMnet2 10.0.0.0/24 contains the SIEM server running Wazuh and the DB server with PostgreSQL and a Flask API.',
+    caption: 'Fig. 1: lab topology, 3 zones and 4 virtual machines in VMware Workstation',
+    hint: '← scroll sideways →',
+    external: 'external network',
+    externalSub: 'VMnet1 · 192.168.1.0/24',
+    dmz: 'DMZ',
+    dmzSub: 'VPN gateway',
+    internal: 'internal network',
+    internalSub: 'VMnet2 · 10.0.0.0/24',
+    kali: ['Kali Linux', 'attacker · 3 GB'],
+    remote: ['remote client', 'WireGuard peer'],
+    gw: ['VPN gateway', 'dual-homed · 2 GB'],
+    siem: ['SIEM server', 'Wazuh · 6 GB'],
+    db: ['DB server', 'Postgres + Flask · 4 GB'],
+    fw: 'firewall',
+    tunnel: 'WireGuard tunnel',
+    legendLink: 'network link',
+  },
+}[lang];
+
+const zones = [
+  { x: 0.5, w: 290, name: text.external, sub: text.externalSub },
+  { x: 330, w: 240, name: text.dmz, sub: text.dmzSub },
+  { x: 610, w: 349.5, name: text.internal, sub: text.internalSub },
+];
+
+const nodes = [
+  { x: 30, y: 120, w: 200, h: 60, label: text.kali },
+  { x: 30, y: 230, w: 200, h: 60, label: text.remote },
+  { x: 360, y: 160, w: 180, h: 80, label: text.gw },
+  { x: 720, y: 120, w: 220, h: 60, label: text.siem },
+  { x: 720, y: 230, w: 220, h: 60, label: text.db },
+];
+---
+
+<DiagramFigure caption={text.caption} hint={text.hint} label={text.label}>
+  <svg
+    class="dg"
+    viewBox="0 0 960 400"
+    role="img"
+    aria-labelledby="net-title net-desc"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <title id="net-title">{text.title}</title>
+    <desc id="net-desc">{text.desc}</desc>
+
+    <!-- zóny -->
+    {
+      zones.map((z) => (
+        <g>
+          <rect class="dg-zone" x={z.x} y="30.5" width={z.w} height="300" rx="4" />
+          <text class="dg-zone-name" x={z.x + 16} y="58">
+            {z.name}
+          </text>
+          <text class="dg-zone-sub" x={z.x + 16} y="78">
+            {z.sub}
+          </text>
+        </g>
+      ))
+    }
+
+    <!-- linky -->
+    <path class="dg-link" d="M230 150.5 H310.5 V180.5 H360" />
+    <path class="dg-link" d="M540 200.5 H675.5" />
+    <path class="dg-link" d="M675.5 150.5 V260.5" />
+    <path class="dg-link" d="M675.5 150.5 H720" />
+    <path class="dg-link" d="M675.5 260.5 H720" />
+
+    <!-- WireGuard tunel -->
+    <path class="dg-accent-line dg-dashed" d="M230 260.5 H310.5 V220.5 H360" />
+    <text class="dg-accent-text" x="360" y="268">{text.tunnel}</text>
+
+    <!-- uzly -->
+    {
+      nodes.map((n) => (
+        <g>
+          <rect class="dg-node" x={n.x + 0.5} y={n.y + 0.5} width={n.w} height={n.h} rx="3" />
+          <text class="dg-node-name" x={n.x + 14} y={n.y + n.h / 2 - 3}>
+            {n.label[0]}
+          </text>
+          <text class="dg-node-sub" x={n.x + 14} y={n.y + n.h / 2 + 17}>
+            {n.label[1]}
+          </text>
+        </g>
+      ))
+    }
+
+    <!-- firewall na obou rozhraních brány -->
+    <rect class="dg-accent-fill" x="357" y="172" width="4" height="57" />
+    <rect class="dg-accent-fill" x="539" y="172" width="4" height="57" />
+    <text class="dg-accent-text" x="450" y="150" text-anchor="middle">{text.fw}</text>
+
+    <!-- legenda -->
+    <g transform="translate(0 370)">
+      <path class="dg-link" d="M0 0.5 H32" />
+      <text class="dg-muted-text" x="42" y="5">{text.legendLink}</text>
+
+      <path class="dg-accent-line dg-dashed" d="M220 0.5 H252" />
+      <text class="dg-muted-text" x="262" y="5">{text.tunnel}</text>
+
+      <rect class="dg-accent-fill" x="440" y="-7" width="4" height="15" />
+      <text class="dg-muted-text" x="454" y="5">{text.fw}</text>
+    </g>
+  </svg>
+</DiagramFigure>

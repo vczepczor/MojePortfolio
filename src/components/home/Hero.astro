@@ -1,0 +1,94 @@
+---
+import { SITE } from '../../config';
+import { useTranslations, type Lang } from '../../i18n';
+import { links } from '../../lib/links';
+import SmartLink from '../SmartLink.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const items = [
+  { label: 'GitHub', href: links.github },
+  { label: 'LinkedIn', href: links.linkedin },
+  { label: t.hero.email, href: links.email },
+  { label: t.hero.cv, href: links.cv },
+];
+---
+
+<section class="hero" aria-labelledby="hero-name">
+  <div class="container">
+    <p class="prompt" aria-hidden="true"><span class="dollar">$</span> whoami</p>
+    <h1 id="hero-name">{SITE.name}</h1>
+    <p class="role">{t.hero.role}</p>
+    <p class="intro measure">{t.hero.intro}</p>
+
+    <ul class="links" role="list" aria-label={t.hero.linksLabel}>
+      {
+        items.map((item) => (
+          <li>
+            <SmartLink href={item.href}>{item.label}</SmartLink>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: var(--space-8) var(--space-8);
+  }
+
+  @media (min-width: 720px) {
+    .hero {
+      padding-block: var(--space-9) var(--space-8);
+    }
+  }
+
+  .prompt {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    color: var(--muted);
+    margin-bottom: var(--space-3);
+  }
+
+  .dollar {
+    color: var(--accent);
+  }
+
+  h1 {
+    font-size: var(--fs-2xl);
+    letter-spacing: -0.02em;
+    font-weight: 600;
+  }
+
+  .role {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    color: var(--muted);
+    margin-top: var(--space-3);
+  }
+
+  .intro {
+    font-size: var(--fs-lg);
+    line-height: 1.55;
+    margin-top: var(--space-6);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: var(--space-2);
+    margin-top: var(--space-6);
+  }
+
+  .links li:not(:last-child)::after {
+    content: '·';
+    color: var(--muted);
+    padding-inline: var(--space-3);
+  }
+</style>

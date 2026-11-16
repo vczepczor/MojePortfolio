@@ -1,0 +1,143 @@
+---
+import { homePath, languages, useTranslations, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  /** URL aktuální stránky v obou jazycích (pro přepínač). */
+  alternates: Record<Lang, string>;
+}
+
+const { lang, alternates } = Astro.props;
+const t = useTranslations(lang);
+const home = homePath(lang);
+
+const links = [
+  { label: t.nav.projects, href: `${home}#${t.anchors.projects}` },
+  { label: t.nav.about, href: `${home}#${t.anchors.about}` },
+  { label: t.nav.contact, href: `${home}#${t.anchors.contact}` },
+];
+
+const langs = Object.entries(languages) as [Lang, string][];
+---
+
+<header class="site-header">
+  <div class="container inner">
+    <a href={home} class="brand">Václav Czepczor</a>
+
+    <nav class="nav" aria-label={t.a11y.mainNav}>
+      <ul role="list">
+        {
+          links.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <nav class="lang" aria-label={t.a11y.langSwitch}>
+      {
+        langs.map(([code, label], i) => (
+          <>
+            {i > 0 && <span class="sep" aria-hidden="true">/</span>}
+            {code === lang ? (
+              <span class="current" aria-current="true" lang={code}>
+                {label}
+              </span>
+            ) : (
+              <a href={alternates[code]} hreflang={code} lang={code}>
+                {label}
+              </a>
+            )}
+          </>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'brand lang'
+      'nav   nav';
+    align-items: baseline;
+    row-gap: var(--space-2);
+    column-gap: var(--space-6);
+    padding-block: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .inner {
+      grid-template-columns: 1fr auto auto;
+      grid-template-areas: 'brand nav lang';
+      padding-block: var(--space-5);
+    }
+  }
+
+  .brand {
+    grid-area: brand;
+    font-weight: 600;
+    font-size: var(--fs-base);
+    letter-spacing: -0.005em;
+    text-decoration: none;
+  }
+
+  .nav {
+    grid-area: nav;
+  }
+
+  .nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav li + li::before {
+    content: '·';
+    color: var(--border);
+    padding-inline: var(--space-3);
+  }
+
+  .nav a,
+  .lang {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+  }
+
+  .nav a,
+  .lang a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .nav a:hover,
+  .lang a:hover {
+    color: var(--accent);
+  }
+
+  .lang {
+    grid-area: lang;
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .lang .sep {
+    color: var(--border);
+  }
+
+  .lang .current {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.3em;
+  }
+</style>

@@ -1,0 +1,106 @@
+---
+import { isTodo, useTranslations, type Lang } from '../../i18n';
+import Todo from '../Todo.astro';
+import SectionTitle from '../SectionTitle.astro';
+import SmartLink from '../SmartLink.astro';
+import Text from '../Text.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="other" aria-labelledby="other-title">
+  <div class="container">
+    <SectionTitle path="projects/other" label={t.sections.other} id="other-title" />
+
+    <ul class="rows" role="list">
+      {
+        t.other.items.map((item) => (
+          <li class="row">
+            <h3 class="name">{item.name}</h3>
+            <p class="desc">
+              <Text value={item.description} />
+            </p>
+            <p class="tech">
+              <Text value={item.tech} />
+            </p>
+            <p class="link">
+              {isTodo(item.href) ? (
+                <Todo note={item.href} />
+              ) : (
+                <SmartLink href={item.href}>
+                  {t.other.open}
+                  <span class="visually-hidden">: {item.name}</span>
+                  <span aria-hidden="true"> →</span>
+                </SmartLink>
+              )}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .other {
+    padding-block: var(--space-6) var(--space-8);
+  }
+
+  .rows {
+    margin: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'name link'
+      'desc desc'
+      'tech tech';
+    column-gap: var(--space-5);
+    row-gap: var(--space-1);
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+
+  @media (min-width: 760px) {
+    .row {
+      grid-template-columns: 11rem minmax(0, 1fr) minmax(0, 14rem) auto;
+      grid-template-areas: 'name desc tech link';
+      align-items: baseline;
+    }
+  }
+
+  .name {
+    grid-area: name;
+    font-size: var(--fs-base);
+    font-weight: 500;
+  }
+
+  .desc {
+    grid-area: desc;
+    color: var(--muted);
+  }
+
+  .tech {
+    grid-area: tech;
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--muted);
+  }
+
+  .link {
+    grid-area: link;
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    justify-self: end;
+    white-space: nowrap;
+  }
+
+</style>

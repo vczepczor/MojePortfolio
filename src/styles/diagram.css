@@ -1,0 +1,127 @@
+/* ==========================================================================
+   Sdílené styly inline SVG diagramů (src/components/diagrams/)
+   Čistý linkový styl: zóny čárkovaně, uzly plné, linky 1 px v --border,
+   akcentová barva jen pro to podstatné (VPN tunel, firewall, akce).
+   ========================================================================== */
+
+.dg-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  scrollbar-color: var(--border) transparent;
+}
+
+.dg-scroll svg {
+  display: block;
+  width: 100%;
+  min-width: 820px;
+  height: auto;
+  padding: 1.25rem;
+  box-sizing: content-box;
+}
+
+@media (min-width: 900px) {
+  .dg-scroll svg {
+    min-width: 0;
+    box-sizing: border-box;
+  }
+}
+
+.dg-hint {
+  margin-top: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+@media (min-width: 900px) {
+  .dg-hint {
+    display: none;
+  }
+}
+
+.dg-caption {
+  margin-top: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+/* --- prvky SVG --- */
+
+.dg text {
+  font-family: var(--font-mono);
+}
+
+.dg-zone {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 1;
+  stroke-dasharray: 5 5;
+}
+
+.dg-zone-name {
+  fill: var(--text);
+  font-size: 15px;
+}
+
+.dg-zone-sub {
+  fill: var(--muted);
+  font-size: 13px;
+}
+
+.dg-node {
+  fill: var(--surface);
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.dg-node-name {
+  fill: var(--text);
+  font-size: 15px;
+}
+
+.dg-node-sub {
+  fill: var(--muted);
+  font-size: 13px;
+}
+
+.dg-link {
+  fill: none;
+  stroke: var(--muted);
+  stroke-opacity: 0.55;
+  stroke-width: 1;
+}
+
+.dg-accent-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.dg-dashed {
+  stroke-dasharray: 6 4;
+}
+
+.dg-accent-fill {
+  fill: var(--accent);
+}
+
+.dg-accent-text {
+  fill: var(--accent);
+  font-size: 13px;
+}
+
+.dg-muted-text {
+  fill: var(--muted);
+  font-size: 13px;
+}
+
+.dg-arrow {
+  fill: var(--muted);
+}
+
+.dg-arrow-accent {
+  fill: var(--accent);
+}
