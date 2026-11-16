@@ -5,7 +5,7 @@ import { unified } from '@astrojs/markdown-remark';
 import rehypePortfolio from './src/lib/rehype-portfolio.mjs';
 
 const SITE = 'https://vczepczor.github.io';
-const BASE = '/portfolio';
+const BASE = '/MojePortfolio'; // = název repozitáře na GitHubu
 
 /**
  * Vrátí českou a anglickou URL téže stránky (hlavní stránka nebo detail projektu).

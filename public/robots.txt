@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://vczepczor.github.io/portfolio/sitemap-index.xml
+Sitemap: https://vczepczor.github.io/MojePortfolio/sitemap-index.xml

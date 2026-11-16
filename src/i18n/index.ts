@@ -20,7 +20,7 @@ export function getLangFromUrl(url: URL): Lang {
   return first === 'en' ? 'en' : defaultLang;
 }
 
-/** Odstraní base ("/portfolio") ze začátku cesty. */
+/** Odstraní base (např. "/MojePortfolio") ze začátku cesty. */
 export function stripBase(pathname: string): string {
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   return base && pathname.startsWith(base) ? pathname.slice(base.length) || '/' : pathname;
@@ -28,7 +28,7 @@ export function stripBase(pathname: string): string {
 
 /**
  * Sestaví URL uvnitř webu s ohledem na base a koncové lomítko.
- * withBase('/en/') -> '/portfolio/en/'
+ * withBase('/en/') -> '/MojePortfolio/en/'
  */
 export function withBase(path = '/'): string {
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');

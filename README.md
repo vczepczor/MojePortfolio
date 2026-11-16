@@ -2,7 +2,7 @@
 
 Osobní portfolio: projekty z oblasti Linuxu, sítí a kybernetické bezpečnosti.
 Statický web v [Astro](https://astro.build), česky (`/`) a anglicky (`/en/`),
-nasazený na GitHub Pages: <https://vczepczor.github.io/portfolio/>.
+nasazený na GitHub Pages: <https://vczepczor.github.io/MojePortfolio/>.
 
 - Bez UI knihoven a bez Tailwindu: obyčejné CSS s custom properties.
 - Bez trackerů a analytiky, písma hostovaná lokálně.
@@ -20,7 +20,7 @@ npm install
 npm run dev
 ```
 
-Web poběží na <http://localhost:4321/portfolio/> (pozor na `/portfolio/`, kořen `/` vrací 404).
+Web poběží na <http://localhost:4321/MojePortfolio/> (pozor na `/MojePortfolio/`, kořen `/` vrací 404).
 
 | Příkaz | Co dělá |
 |---|---|
@@ -111,7 +111,7 @@ Seznam všech placeholderů je v [TODO.md](TODO.md). Rychlé hledání: `grep -r
 Nasazení je automatické přes GitHub Actions ([.github/workflows/deploy.yml](.github/workflows/deploy.yml))
 s oficiální akcí `withastro/action`.
 
-1. Vytvoř na GitHubu repozitář `portfolio` pod účtem `vczepczor`.
+1. Repozitář na GitHubu: `vczepczor/MojePortfolio`.
 2. V repozitáři: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 3. Pushni kód do větve `main`:
 
@@ -120,13 +120,14 @@ s oficiální akcí `withastro/action`.
    git add .
    git commit -m "Initial portfolio"
    git branch -M main
-   git remote add origin https://github.com/vczepczor/portfolio.git
+   git remote add origin https://github.com/vczepczor/MojePortfolio.git
    git push -u origin main
    ```
 
 Každý další push do `main` web znovu sestaví a nasadí (záložka **Actions** ukazuje průběh).
 
-Pokud by se změnil název repozitáře nebo účtu, uprav `SITE` a `BASE` v `astro.config.mjs`,
+**Důležité:** `BASE` v `astro.config.mjs` musí přesně odpovídat názvu repozitáře (včetně velkých písmen),
+jinak se nenačte CSS ani obrázky. Při přejmenování repozitáře uprav `SITE` a `BASE` v `astro.config.mjs`,
 `url` v `src/config.ts` a adresu sitemapy v `public/robots.txt`.
 
 ## Obrázek pro sdílení (og.png)

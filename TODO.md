@@ -11,7 +11,6 @@ Kontrola, že nic nezbylo: `grep -rn "TODO:" src`.
 | E-mail | `src/config.ts` → `CONTACT.email` |
 | GitHub profil | `src/config.ts` → `CONTACT.github` |
 | LinkedIn profil | `src/config.ts` → `CONTACT.linkedin` |
-| Odkaz na zdrojový kód webu (patička) | `src/config.ts` → `CONTACT.sourceRepo` (např. `https://github.com/vczepczor/portfolio`) |
 | CV v PDF | soubor `public/cv.pdf`, pak `src/config.ts` → `cvAvailable: true` |
 
 ## Hlavní stránka

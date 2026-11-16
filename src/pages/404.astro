@@ -1,6 +1,6 @@
 ---
 /**
- * Vlastní 404. GitHub Pages ji vrací pro všechny neexistující cesty pod /portfolio/.
+ * Vlastní 404. GitHub Pages ji vrací pro všechny neexistující cesty pod base (viz astro.config.mjs).
  * Jazyk návštěvníka neznáme, proto je česky s odkazem i na anglickou verzi.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -8,6 +8,7 @@ import { homePath, useTranslations } from '../i18n';
 
 const t = useTranslations('cs');
 const en = useTranslations('en');
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <BaseLayout lang="cs" title={t.notFound.title} noindex>
@@ -29,9 +30,8 @@ const en = useTranslations('en');
 </BaseLayout>
 
 <!-- Jediný JS na webu: dosadí do výpisu skutečnou cestu. Bez JS zůstane "/stranka". -->
-<script is:inline>
+<script is:inline define:vars={{ base }}>
   (function () {
-    var base = '/portfolio';
     var path = decodeURIComponent(location.pathname);
     if (path.indexOf(base) === 0) path = path.slice(base.length) || '/';
     if (path.length > 60) path = path.slice(0, 57) + '...';

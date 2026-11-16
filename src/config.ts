@@ -6,7 +6,7 @@
 
 export const SITE = {
   name: 'Václav Czepczor',
-  url: 'https://vczepczor.github.io/portfolio/',
+  url: 'https://vczepczor.github.io/MojePortfolio/',
 };
 
 export const CONTACT = {
@@ -14,7 +14,7 @@ export const CONTACT = {
   github: 'TODO: URL GitHub profilu (např. https://github.com/uzivatel)',
   linkedin: 'TODO: URL LinkedIn profilu (např. https://www.linkedin.com/in/uzivatel)',
   /** Zdrojový kód tohoto webu (odkaz v patičce). */
-  sourceRepo: 'TODO: URL repozitáře s tímto webem',
+  sourceRepo: 'https://github.com/vczepczor/MojePortfolio',
   /** CV v PDF – soubor patří do public/cv.pdf. Až tam bude, přepni na true. */
   cvAvailable: false,
 };
